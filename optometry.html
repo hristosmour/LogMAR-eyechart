@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>UwUptometry</title>
+</head>
+<body>
+<div id = "green" style = "display:flex; font-family:Liberation,sans; position:fixed; width:50%; height:100%; top:0px; right:0px; z-index:1000; align-items: center; justify-content:center; background:green"><p id="greendivtext"></div>
+<div id = "red" style = "display:flex; font-family:Liberation,sans; position:fixed; width:50%; height:100%; top:0px; left:0px; z-index:1000; align-items: center; justify-content:center; background:red"><p id="reddivtext"></div>
+<div id = "main" style = "display:flex; font-family:Liberation,sans; position:fixed; width:100%; height:100%; top:0px; left:0px; z-index:1000; align-items: center; justify-content:center;"><p id="maindivtext"></p></div>
+</body>
+<script>
+var distance = prompt("Please enter the patient-table distance in centimeters");
+var ppi = prompt("Please enter the output device's ppi");
+var stage=1,istage=10,colourtest=0; 
+var deg,size,randnum;
+green.style.visibility = 'hidden'; 
+red.style.visibility = 'hidden'; 
+function random (stage) {
+var min, max;
+  min = 0;
+    if (stage != 1){
+        min=1;
+    }
+
+   min = parseInt(min.toString(10) + "0".repeat(stage-1));
+   max=parseInt("9".repeat(stage));
+	return Math.floor(Math.random() * (max - min + 10) ) + min;
+}
+function deg2rad (deg) {
+	return deg * (Math.PI/180);
+}
+function truestage (stage){
+	return 6*Math.pow(1.26, (istage-1));
+}
+function initialSize () {
+	return Math.tan(deg2rad(5/60))*truestage(stage)*100;
+}
+function finalSize () {
+	return (initialSize()/600)*distance;
+}
+function cm2px (ppi){
+	return finalSize()*(ppi/2.54);
+}
+function displaySize () {
+	var mfontsDiv = document.getElementById("main"), gfontsDiv = document.getElementById("green"), rfontsDiv = document.getElementById("red");
+        mfontsDiv.style.fontSize = cm2px(ppi).toString() + 'px';
+        gfontsDiv.style.fontSize = cm2px(ppi).toString() + 'px';
+        rfontsDiv.style.fontSize = cm2px(ppi).toString() + 'px';
+}
+function randomNumber () {
+ 	randnum = random (stage);
+ 	return randnum;
+}
+displaySize();
+document.getElementById("maindivtext").innerHTML = randomNumber ();
+document.getElementById("greendivtext").innerHTML = randnum;
+document.getElementById("reddivtext").innerHTML = randnum;
+document.addEventListener('keydown', function(event) {
+    if(event.keyCode == 67){
+    	if(colourtest == 0){
+    		green.style.visibility = 'visible'; 
+    		red.style.visibility = 'visible'; 
+    		main.style.visibility = 'hidden'; 
+    		colourtest = 1;
+    	}
+    	else{
+    	    	green.style.visibility = 'hidden'; 
+    		red.style.visibility = 'hidden'; 
+    		main.style.visibility = 'visible'; 
+    		colourtest = 0;
+    	}
+    }
+    else if(event.keyCode == 32) {
+    	document.getElementById("maindivtext").innerHTML = randomNumber ();
+    	document.getElementById("greendivtext").innerHTML = randnum;
+    	document.getElementById("reddivtext").innerHTML = randnum;
+    }
+    else if(event.keyCode == 40) {
+        if(stage<10) {
+        	stage++;
+        	istage--;
+        	displaySize();
+        	document.getElementById("maindivtext").innerHTML = randomNumber ();
+        	document.getElementById("greendivtext").innerHTML = randnum;
+        	document.getElementById("reddivtext").innerHTML = randnum;
+        }
+        else if(stage==10) {
+        	var csi = confirm("Stage 10 has been reached. Click \"OK\" to continue to stage 11");
+         	if(csi==true){
+         		stage++;
+         		istage--;
+         		displaySize();
+         		document.getElementById("maindivtext").innerHTML = randomNumber ();
+         		document.getElementById("greendivtext").innerHTML = randnum;
+         		document.getElementById("reddivtext").innerHTML = randnum;
+         	}
+        }
+        else {
+        	stage++;
+        	istage--;
+        	displaySize();
+        	document.getElementById("maindivtext").innerHTML = randomNumber ();
+        	document.getElementById("greendivtext").innerHTML = randnum;
+        	document.getElementById("reddivtext").innerHTML = randnum;
+        }
+    } 
+    else if(event.keyCode == 38) {
+        if(stage>1) {
+        	stage--;
+        	istage++;
+        	displaySize();
+        	document.getElementById("maindivtext").innerHTML = randomNumber ();
+        	document.getElementById("greendivtext").innerHTML = randnum;
+        	document.getElementById("reddivtext").innerHTML = randnum;
+        }
+    }
+});
+</script>
+</html>
